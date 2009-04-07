@@ -7,6 +7,7 @@
 // 2. Update the TWEET_FILE to your own choice of location.
 // 3. Update the URL_STRING in XMLParser.m to the twitter search feed of your choice
 // 4. SHOW_TICK, when set to YES, will show the start of each fetch loop.
+// 5. Out of sheer paranoia, you'll need to supply your own PUSH_CMD
 // 
 // Pass the time interval between checks as the argument to the utility.
 //
@@ -15,6 +16,7 @@
 
 #define TWEET_FILE	@"/Users/ericasadun/.tweet"
 #define SHOW_TICK	YES
+#define PUSH_CMD	@"You'll need to supply this on your own"
 
 int main (int argc, const char * argv[]) {
 	if (argc < 2)
@@ -63,7 +65,7 @@ int main (int argc, const char * argv[]) {
 				testString = [testString stringByReplacingOccurrencesOfString:@"}" withString:@")"];
 				
 				// push it
-				NSString *cmd = [NSString stringWithFormat:@"perl push.pl '{\"aps\":{\"alert\":{\"body\":\"%@\",\"action-loc-key\":null}}}'", testString];
+				NSString *cmd = PUSH_CMD;
 				system([cmd UTF8String]);
 			}
 		}
