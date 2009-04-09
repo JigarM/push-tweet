@@ -15,7 +15,6 @@
 }
 
 + (XMLParser *) sharedInstance;
-- (NSURL *) getURL;
-- (TreeNode *)parseXMLFile: (NSURL *) url;
+- (TreeNode *)parseXMLFromURL: (NSURL *) url;
 @end
 

@@ -15,17 +15,21 @@
 //
 
 #define TWEET_FILE	@"/Users/ericasadun/.tweet"
-#define SHOW_TICK	YES
-#define PUSH_CMD	@"You'll need to supply this on your own"
+#define URL_STRING	@"http://search.twitter.com/search.atom?q=+ericasadun+OR+sadun++-sadunalpdag+-alpdag"
+#define SHOW_TICK	NO
+
+//@"You'll need to supply this on your own"
+#define PUSH_CMD	[NSString stringWithFormat:@"perl push.pl '{\"aps\":{\"alert\":{\"body\":\"%@\",\"action-loc-key\":null}}}'", testString]
 
 int main (int argc, const char * argv[]) {
-	if (argc < 2)
+	/* if (argc < 2)
 	{
 		printf("Usage: %s delay-in-seconds\n", argv[0]);
 		exit(-1);
-	}
+	} 
 	
-	int delay = atoi(argv[1]);
+	int delay = atoi(argv[1]); */
+	int delay = 5;
 	printf("Initializing with delay of %d\n", delay);
 	
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -33,7 +37,7 @@ int main (int argc, const char * argv[]) {
 	while (1 > 0)
 	{
 	
-		TreeNode *root = [[XMLParser sharedInstance] parseXMLFile: [[XMLParser sharedInstance] getURL]];
+		TreeNode *root = [[XMLParser sharedInstance] parseXMLFromURL: [NSURL URLWithString:URL_STRING]];
 		TreeNode *found = nil;
 		for (TreeNode *node in [root children])
 		{
@@ -65,8 +69,7 @@ int main (int argc, const char * argv[]) {
 				testString = [testString stringByReplacingOccurrencesOfString:@"}" withString:@")"];
 				
 				// push it
-				NSString *cmd = PUSH_CMD;
-				system([cmd UTF8String]);
+				system([PUSH_CMD UTF8String]);
 			}
 		}
 		

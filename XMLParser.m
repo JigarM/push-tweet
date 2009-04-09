@@ -7,8 +7,6 @@
 
 #import "XMLParser.h"
 
-#define URL_STRING	@"http://search.twitter.com/search.atom?q=+ericasadun+OR+sadun++-sadunalpdag+-alpdag"
-
 @implementation XMLParser
 
 static XMLParser *sharedInstance = nil;
@@ -22,15 +20,8 @@ static XMLParser *sharedInstance = nil;
     return sharedInstance;
 }
 
-// Hardwire Safari ref
--(NSURL *) getURL
-{
-	NSString *urlString = URL_STRING;
-	return [NSURL URLWithString:urlString];
-}
-
 // Public parser returns the tree root. You may have to go down one node to the real results
-- (TreeNode *)parseXMLFile: (NSURL *) url
+- (TreeNode *)parseXMLFromURL: (NSURL *) url
 {	
 	stack = [NSMutableArray array];
 	
@@ -41,10 +32,13 @@ static XMLParser *sharedInstance = nil;
 	
 	[stack addObject:root];
 	
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
     [parser setDelegate:self];
 	[parser parse];
     [parser release];
+	[pool drain];
+	[pool release];
 	
 	// pop down to real root
 	
@@ -69,7 +63,7 @@ static XMLParser *sharedInstance = nil;
 	
 	leaf.key = [NSString stringWithString:elementName];
 	leaf.leafvalue = nil;
-	leaf.children = [[NSMutableArray alloc] init];
+	leaf.children = [NSMutableArray array];
 	
 	[stack addObject:leaf];
 }
