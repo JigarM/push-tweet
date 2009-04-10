@@ -19,7 +19,7 @@
 #define SHOW_TICK	NO
 
 //@"You'll need to supply this on your own"
-#define PUSH_CMD	[NSString stringWithFormat:@"perl push.pl '{\"aps\":{\"alert\":{\"body\":\"%@\",\"action-loc-key\":null}}}'", testString]
+#define PUSH_CMD	@"REPLACE THIS"
 
 int main (int argc, const char * argv[]) {
 	/* if (argc < 2)
